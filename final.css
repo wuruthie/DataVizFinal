@@ -1,0 +1,21 @@
+svg {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.land {
+  fill: #ccc;
+}
+
+.state-boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1px;
+}
+
+.county-boundary {
+  fill: none;
+  stroke: #000;
+  stroke-width: .5px;
+}
