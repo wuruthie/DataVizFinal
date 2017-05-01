@@ -2,31 +2,40 @@
 var svg_width = window.innerWidth;
 var svg_height = window.innerHeight;
 
-var projection = d3.geoEquirectangular().translate(500, 500);
-var path = d3.geoPath().projection(projection);
-
 // Generate an SVG element on the page
 var svg = d3.select("body").append("svg")
     .attr("width", svg_width)
     .attr("height", svg_height);
 
-d3.json('world-110m.json', function(error, world) {
-  // Decode the topojson file
-  var land = topojson.feature(world, world.objects.land);
-  var countries = topojson.mesh(world, world.objects.countries);
+// Initialize map projections
+var projection = d3.geoEquirectangular();
+var path = d3.geoPath().projection(projection);
 
-  // Fit our projection so it fills the window
-  projection.fitSize([svg_width, svg_height-80], land);
+// Defer our actual code until we have both the map and county data loaded
+d3.queue()
+  .defer(d3.json, 'world-110m.json')
+  .defer(d3.csv, 'global_terrorism_data.csv', function(d) {
+    // TODO: Extract relevant data from .csv file
+  })
+  .await(function(error, world) {
+    // This code runs when both data files are loaded
 
-  // Create land area
-  svg.append('path')
-    .datum(land)
-    .attr('class', 'land')
-    .attr('d', path);
+    // Decode the topojson file
+    var land = topojson.feature(world, world.objects.land);
+    var countries = topojson.mesh(world, world.objects.countries);
 
-  // Create state boundaries
-  svg.append('path')
-    .datum(countries)
-    .attr('class', 'state-boundary')
-    .attr('d', path);
+    // Fit our projection so it fills the window
+    projection.fitSize([svg_width, svg_height-80], land);
+
+    // Create land area
+    svg.append('path')
+      .datum(land)
+      .attr('class', 'land')
+      .attr('d', path);
+
+    // Create state boundaries
+    svg.append('path')
+      .datum(countries)
+      .attr('class', 'state-boundary')
+      .attr('d', path);
 });
