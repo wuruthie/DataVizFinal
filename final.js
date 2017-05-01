@@ -11,11 +11,21 @@ var svg = d3.select("body").append("svg")
 var projection = d3.geoEquirectangular();
 var path = d3.geoPath().projection(projection);
 
+// Keep track of terrorism observation
+var terrorism_event = d3.map();
+
 // Defer our actual code until we have both the map and county data loaded
 d3.queue()
   .defer(d3.json, 'world-110m.json')
   .defer(d3.csv, 'global_terrorism_data.csv', function(d) {
     // TODO: Extract relevant data from .csv file
+    terrorism_event.set("country_name", d.country_txt);
+    terrorism_event.set("event_year", d.iyear);
+    terrorism_event.set("num_killed", d.nkill);
+    terrorism_event.set("num_wounded", d.nwound);
+
+
+
   })
   .await(function(error, world) {
     // This code runs when both data files are loaded
