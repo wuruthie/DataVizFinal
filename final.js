@@ -24,7 +24,8 @@ var maxDate;
 d3.queue()
   .defer(d3.json, 'world-110m.json')
   .defer(d3.csv, 'global_terrorism_data.csv')
-  .await(function(error, world, terrorism_data) {
+  .defer(d3.tsv, 'world-country-names.tsv')
+  .await(function(error, world, terrorism_data, country_names) {
     // Decode the topojson file
     var land = topojson.feature(world, world.objects.land);
 
