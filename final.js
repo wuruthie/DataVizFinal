@@ -63,10 +63,8 @@ d3.queue()
     eventsByYear = terrorismEvents.dimension(function (d) {
       return d.year;
     });
-    eventsByYear.filterRange([1990, 1991]); // Change the min and max date per the slider direction. If forward, add one; if backwards, subtract one
+    eventsByYear.filter([1990, 1991]); // Using some dummy years. Change the min and max date per the slider direction. If forward, add one; if backwards, subtract one
 
-    // Fun facts: This shows you the how many attacks that happened within the year grouping above. 
-    var eventsByYearGrouped = eventsByYear.group();
-    console.log(eventsByYearGrouped.size());
-
+    // Prints out all the events that happened between 1990 and 1991
+    console.log(eventsByYear.top(Infinity));
 });
