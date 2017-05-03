@@ -28,6 +28,7 @@ d3.queue()
   .await(function(error, world, terrorism_data, country_names) {
     // Decode the topojson file
     var land = topojson.feature(world, world.objects.land);
+    var countries = topojson.feature(world, world.objects.countries).features
 
     // Fit our projection so it fills the window
     projection.fitSize([svg_width, svg_height - 80], land);
@@ -43,6 +44,33 @@ d3.queue()
       .datum(topojson.mesh(world, world.objects.countries))
       .attr('class', 'state-boundary')
       .attr('d', path);
+
+    countries = countries.filter(function(d) {
+      return country_names.some(function(n) {
+        if (d.id == n.id) return d.name = n.name
+      });
+    });
+
+    svg.selectAll('.country')
+      .data(countries)
+      .enter().append('path')
+        .attr('class', 'country')
+        .attr('data-name', function(d) {
+            return d.name
+          })
+        .attr('data-x-centroid', function(d) {
+          return path.centroid(d)[0];
+        })
+        .attr('data-y-bottom', function(d) {
+          return path.bounds(d)[1][1];
+        })
+        .on('mouseover', function() {
+
+          })
+        })
+        .on('mouseout', function() {
+
+        });
 
     // Retrieve relevant fields that measure a unit of observation for an event
     for (var data of terrorism_data) {
@@ -67,5 +95,5 @@ d3.queue()
     eventsByYear.filter([1990, 1991]); // Using some dummy years. Change the min and max date per the slider direction. If forward, add one; if backwards, subtract one
 
     // Prints out all the events that happened between 1990 and 1991
-    console.log(eventsByYear.top(Infinity));
+//    console.log(eventsByYear.top(Infinity));
 });
