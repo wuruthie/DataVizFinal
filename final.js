@@ -20,6 +20,7 @@ var eventsByYear;
 var minDate;
 var maxDate;
 
+// Credits to : http://bl.ocks.org/micahstubbs/8e15870eb432a21f0bc4d3d527b2d14f
 var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
@@ -60,10 +61,7 @@ d3.queue()
       });
     });
 
-    let nameTag = svg.append('text')
-      .attr('font-family', 'Verdana')
-      .attr('font-size', '15px');
-
+// Credits to http://bl.ocks.org/khoomeister/230e1eff08ee8d6eaf35 on how to get the centroid and bottom values
     svg.selectAll('country')
       .data(countries)
       .enter()
