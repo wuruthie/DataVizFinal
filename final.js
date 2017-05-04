@@ -20,6 +20,15 @@ var eventsByYear;
 var minDate;
 var maxDate;
 
+var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+              return "<span class='details'>" + d.name + "<br></span>";
+            });
+
+svg.call(tip);
+
 // Defer our actual code until we have both the map and county data loaded
 d3.queue()
   .defer(d3.json, 'world-110m.json')
@@ -51,25 +60,32 @@ d3.queue()
       });
     });
 
-    svg.selectAll('.country')
+    let nameTag = svg.append('text')
+      .attr('font-family', 'Verdana')
+      .attr('font-size', '15px');
+
+    svg.selectAll('country')
       .data(countries)
-      .enter().append('path')
+      .enter()
+      .append('path')
         .attr('class', 'country')
-        .attr('data-name', function(d) {
-            return d.name
-          })
-        .attr('data-x-centroid', function(d) {
-          return path.centroid(d)[0];
-        })
-        .attr('data-y-bottom', function(d) {
-          return path.bounds(d)[1][1];
-        })
-        .on('mouseover', function() {
+        .attr('d', path)
+        .attr('data-name', (d) => {return d.name;})
+        .attr('data-x-centroid', (d) => {return path.centroid(d)[0];})
+        .attr('data-y-bottom', (d) => {return path.bounds(d)[1][1];})
+        .on('mouseover', function(d) {
+          tip.show(d)
 
-          })
-        })
-        .on('mouseout', function() {
+          d3.select(this)
+            .style("opacity", 1)
+            .style("stroke","white")
+            .style("stroke-width",3);
+        }).on('mouseout', function(d) {
+          tip.hide(d)
 
+          d3.select(this)
+            .style("stroke","white")
+            .style("stroke-width",0.3);
         });
 
     // Retrieve relevant fields that measure a unit of observation for an event
