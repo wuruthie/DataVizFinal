@@ -86,3 +86,12 @@ pointer-events: none;
 .details{
   color:white;
 }
+
+.point {
+  fill: yellow;
+  opacity: .3;  
+}
+
+.geoDiv{
+    position: absolute;
+}
