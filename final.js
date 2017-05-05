@@ -5,7 +5,7 @@ var svg_height = window.innerHeight;
 // Generate an SVG element on the page
 var svg = d3.select("body").append("svg")
     .attr("width", svg_width)
-    .attr("height", svg_height);
+    .attr("height", svg_height);    
 
 // Initialize map projections
 var projection = d3.geoEquirectangular();
@@ -111,3 +111,54 @@ d3.queue()
     // Prints out all the events that happened between 1990 and 1991
 //    console.log(eventsByYear.top(Infinity));
 });
+
+
+//create the slider
+
+var margin = {right: 50, left: 50}
+var slider_width = svg_width - margin.left - margin.right
+var slider_y = svg_height;
+console.log("HERE!")
+
+var x = d3.scaleLinear()
+    .domain([1990, 2015])
+    .range([0, slider_width])
+    .clamp(true);
+
+var slider = svg.append("g")
+    .attr("class", "slider")
+    .attr("transform", "translate(" + margin.left + "," + (svg_height - 50) + ")");
+
+slider.append("line")
+    .attr("class", "track")
+    .attr("x1", x.range()[0])
+    .attr("x2", x.range()[1])
+  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-inset")
+  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-overlay")
+    .call(d3.drag()
+        .on("start.interrupt", function() { slider.interrupt(); })
+        .on("start drag", function() { hue(x.invert(d3.event.x)); }));
+
+slider.insert("g", ".track-overlay")
+    .attr("class", "ticks")
+    .attr("transform", "translate(0," + 18 + ")")
+  .selectAll("text")
+  .data(x.ticks(20))
+  .enter().append("text")
+    .attr("x", x)
+    .attr("text-anchor", "middle")
+    .text(function(d) { return d; });
+
+var handle = slider.insert("circle", ".track-overlay")
+    .attr("class", "handle")
+    .attr("r", 9);
+
+
+
+function hue(h) {
+  handle.attr("cx", x(h));
+  //insert our own function below:
+  //svg.style("background-color", d3.hsl(h, 0.8, 0.8));
+};
