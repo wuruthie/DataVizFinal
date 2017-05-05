@@ -115,7 +115,6 @@ d3.queue()
 // Credit for base implementation of slider to: https://bl.ocks.org/mbostock/6499018
 var margin = {right: 50, left: 50}
 var slider_width = svg_width - margin.left - margin.right
-var slider_y = svg_height;
 
 var x = d3.scaleLinear()
     .domain([1990, 2015])
