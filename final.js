@@ -20,13 +20,25 @@ var eventsByYear;
 var minDate;
 var maxDate;
 
+// Credits to : http://bl.ocks.org/micahstubbs/8e15870eb432a21f0bc4d3d527b2d14f
+var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+              return "<span class='details'>" + d.name + "<br></span>";
+            });
+
+svg.call(tip);
+
 // Defer our actual code until we have both the map and county data loaded
 d3.queue()
   .defer(d3.json, 'world-110m.json')
   .defer(d3.csv, 'global_terrorism_data.csv')
-  .await(function(error, world, terrorism_data) {
+  .defer(d3.tsv, 'world-country-names.tsv')
+  .await(function(error, world, terrorism_data, country_names) {
     // Decode the topojson file
     var land = topojson.feature(world, world.objects.land);
+    var countries = topojson.feature(world, world.objects.countries).features
 
     // Fit our projection so it fills the window
     projection.fitSize([svg_width, svg_height - 80], land);
@@ -42,6 +54,37 @@ d3.queue()
       .datum(topojson.mesh(world, world.objects.countries))
       .attr('class', 'state-boundary')
       .attr('d', path);
+
+    countries = countries.filter(function(d) {
+      return country_names.some(function(n) {
+        if (d.id == n.id) return d.name = n.name
+      });
+    });
+
+// Credits to http://bl.ocks.org/khoomeister/230e1eff08ee8d6eaf35 on how to get the centroid and bottom values
+    svg.selectAll('country')
+      .data(countries)
+      .enter()
+      .append('path')
+        .attr('class', 'country')
+        .attr('d', path)
+        .attr('data-name', (d) => {return d.name;})
+        .attr('data-x-centroid', (d) => {return path.centroid(d)[0];})
+        .attr('data-y-bottom', (d) => {return path.bounds(d)[1][1];})
+        .on('mouseover', function(d) {
+          tip.show(d)
+
+          d3.select(this)
+            .style("opacity", 1)
+            .style("stroke","white")
+            .style("stroke-width",3);
+        }).on('mouseout', function(d) {
+          tip.hide(d)
+
+          d3.select(this)
+            .style("stroke","white")
+            .style("stroke-width",0.3);
+        });
 
     // Retrieve relevant fields that measure a unit of observation for an event
     for (var data of terrorism_data) {
@@ -66,5 +109,5 @@ d3.queue()
     eventsByYear.filter([1990, 1991]); // Using some dummy years. Change the min and max date per the slider direction. If forward, add one; if backwards, subtract one
 
     // Prints out all the events that happened between 1990 and 1991
-    console.log(eventsByYear.top(Infinity));
+//    console.log(eventsByYear.top(Infinity));
 });
