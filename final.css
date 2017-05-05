@@ -95,3 +95,20 @@ pointer-events: none;
 .geoDiv{
     position: absolute;
 }
+
+.paragraph{
+  position: relative;
+  top: 150px;
+  left: 50px;
+  width: 150px;
+  height: 100px;
+  font-weight:normal;
+  color:#000000;
+  letter-spacing:0pt;
+  word-spacing:0pt;
+  font-size:22px;
+  text-align:left;
+  font-family:helvetica, 
+  sans-serif;
+  line-height:1;
+}
