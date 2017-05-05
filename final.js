@@ -112,13 +112,10 @@ d3.queue()
 //    console.log(eventsByYear.top(Infinity));
 });
 
-
-//create the slider
-
+// Credit for base implementation of slider to: https://bl.ocks.org/mbostock/6499018
 var margin = {right: 50, left: 50}
 var slider_width = svg_width - margin.left - margin.right
 var slider_y = svg_height;
-console.log("HERE!")
 
 var x = d3.scaleLinear()
     .domain([1990, 2015])
@@ -159,6 +156,4 @@ var handle = slider.insert("circle", ".track-overlay")
 
 function hue(h) {
   handle.attr("cx", x(h));
-  //insert our own function below:
-  //svg.style("background-color", d3.hsl(h, 0.8, 0.8));
 };

@@ -88,7 +88,7 @@ pointer-events: none;
 }
 
 
-/* slider stuff */
+/*Credit for the base implementation of the slider to: https://bl.ocks.org/mbostock/6499018 */
 
 .ticks {
   font: 10px sans-serif;
