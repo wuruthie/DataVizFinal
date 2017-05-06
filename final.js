@@ -111,6 +111,7 @@ d3.queue()
     // Prints out all the events that happened between 1990 and 1991
 //    console.log(eventsByYear.top(Infinity));
 
+d3.selectAll('.point').remove();
 var data = eventsByYear.top(Infinity);
 
 points = svg.selectAll('.point')
