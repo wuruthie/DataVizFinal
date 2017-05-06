@@ -110,6 +110,31 @@ d3.queue()
 
     // Prints out all the events that happened between 1990 and 1991
 //    console.log(eventsByYear.top(Infinity));
+
+var data = eventsByYear.top(Infinity);
+
+points = svg.selectAll('.point')
+  .data(data)
+  .enter()
+    .append("svg:circle")
+    .attr("cx", function(d){ return projection([d.longitude,d.latitude])[0]; })
+    .attr("cy", function(d) { return projection([d.longitude,d.latitude])[1]; })
+    .attr("r", 3)
+    .attr("class", "point")
+    .on("mouseover", function(d) {
+            d3.select(".paragraph")
+        .append("p")
+            .attr("id", "removablediv")
+              .append("text")
+              .text("In " + d.year + "," + " this terrorist attack in " + d.country_name + " killed " + d.num_killed + 
+                  " and wounded " + d.num_wounded + ".")
+        })
+       .on("mouseout", function(d) {
+        d3.select(".paragraph")
+        .select("text").remove();
+    });   
+
+points.data(data).exit().remove();
 });
 
 // Credit for base implementation of slider to: https://bl.ocks.org/mbostock/6499018
