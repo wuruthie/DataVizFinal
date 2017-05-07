@@ -20,6 +20,12 @@ var eventsByYear;
 var minDate;
 var maxDate;
 
+// Range of months for events
+var monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+
 // Credits to : http://bl.ocks.org/micahstubbs/8e15870eb432a21f0bc4d3d527b2d14f
 var tip = d3.tip()
             .attr('class', 'd3-tip')
@@ -92,9 +98,13 @@ d3.queue()
         country_name : data.country_txt,
         latitude: data.latitude,
         longitude: data.longitude,
+        month: parseInt(data.imonth),
         year: parseInt(data.iyear),
         num_killed: parseInt(data.nkill),
-        num_wounded: parseInt(data.nwound)
+        num_wounded: parseInt(data.nwound),
+        city: data.city,
+        target: data.target1
+
       });
     }
 
@@ -110,6 +120,38 @@ d3.queue()
 
     // Prints out all the events that happened between 1990 and 1991
 //    console.log(eventsByYear.top(Infinity));
+
+d3.selectAll('.point').remove();
+var data = eventsByYear.top(Infinity);
+
+points = svg.selectAll('.point')
+  .data(data)
+  .enter()
+    .append("svg:circle")
+    .attr("cx", function(d){ return projection([d.longitude,d.latitude])[0]; })
+    .attr("cy", function(d) { return projection([d.longitude,d.latitude])[1]; })
+    .attr("r", 3)
+    .attr("class", "point")
+    .on("mouseover", function(d) {
+      if (d.city != 'Unknown' &&
+          d.country_name != 'Unknown' &&
+          d.target != 'Unknown' &&
+          d.num_killed != 'Unknown' &&
+          d.num_wounded != 'Unknown') {
+        d3.select(".paragraph")
+          .append("p")
+          .attr("id", "removablediv")
+          .append("text")
+          .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + d.num_killed + 
+                        " and wounded " + d.num_wounded + ". The target of the attack was the " + d.target + ".")
+            }
+          })
+       .on("mouseout", function(d) {
+        d3.select(".paragraph")
+        .select("text").remove();
+    });   
+
+points.data(data).exit().remove();
 });
 
 // Credit for base implementation of slider to: https://bl.ocks.org/mbostock/6499018

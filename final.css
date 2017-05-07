@@ -21,6 +21,34 @@ svg {
   stroke-linejoin: round;
 }
 
+/* points */
+
+.point {
+  fill: yellow;
+  opacity: .3;  
+}
+
+.geoDiv{
+    position: absolute;
+}
+
+.paragraph{
+  position: relative;
+  top: 160px;
+  left: 20px;
+  width: 200px;
+  height: 200px;
+  font-weight:normal;
+  color:#000000;
+  letter-spacing:0pt;
+  word-spacing:0pt;
+  font-size:22px;
+  text-align:left;
+  font-family:helvetica, 
+  sans-serif;
+  line-height:1;
+}
+
 /* Tooltip CSS */
 .d3-tip {
 line-height: 1.5;
