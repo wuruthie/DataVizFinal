@@ -168,7 +168,7 @@ slider.append("line")
             slider.interrupt();
         })
         .on("start drag", function() {
-            displayPointsByYear(x.invert(d3.event.x));
+            displayPointsByYear(x.invert(d3.event.x) | 0);
         }));
 
 slider.insert("g", ".track-overlay")
@@ -187,14 +187,19 @@ var handle = slider.insert("circle", ".track-overlay")
     .attr("class", "handle")
     .attr("r", 9);
 
+
+
 function displayPointsByYear(year) {
     handle.attr("cx", x(year));
 
-    eventsByYear.filterExact(year | 0);
-    visualizeData(eventsByYear.top(Infinity));
-}
+    var colors = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6"];
 
-function visualizeData(data) {
+    eventsByYear.filterExact(year);
+    var data = eventsByYear.top(Infinity);
+    visualizeData(data, colors, year);
+};
+
+function visualizeData(data, colors, year) {
     d3.selectAll('.point').remove();
     points = svg.selectAll('.point')
         .data(data)
@@ -208,6 +213,7 @@ function visualizeData(data) {
         })
         .attr("r", 3)
         .attr("class", "point")
+        .style("fill", colors[year % colors.length])
         .on("mouseover", function(d) {
             if (d.city != 'Unknown' &&
                 d.country_name != 'Unknown' &&
@@ -228,4 +234,4 @@ function visualizeData(data) {
         });
 
     points.data(data).exit().remove();
-}
+};
