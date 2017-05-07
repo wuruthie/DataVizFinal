@@ -5,7 +5,7 @@ var svg_height = window.innerHeight;
 // Generate an SVG element on the page
 var svg = d3.select("body").append("svg")
     .attr("width", svg_width)
-    .attr("height", svg_height);    
+    .attr("height", svg_height);
 
 // Initialize map projections
 var projection = d3.geoEquirectangular();
@@ -119,40 +119,41 @@ d3.queue()
     eventsByYear.filter([1990, 1991]); // Using some dummy years. Change the min and max date per the slider direction. If forward, add one; if backwards, subtract one
 
     // Prints out all the events that happened between 1990 and 1991
-//    console.log(eventsByYear.top(Infinity));
+    //    console.log(eventsByYear.top(Infinity));
 
-d3.selectAll('.point').remove();
-var data = eventsByYear.top(Infinity);
+    d3.selectAll('.point').remove();
+    var data = eventsByYear.top(Infinity);
 
-points = svg.selectAll('.point')
-  .data(data)
-  .enter()
-    .append("svg:circle")
-    .attr("cx", function(d){ return projection([d.longitude,d.latitude])[0]; })
-    .attr("cy", function(d) { return projection([d.longitude,d.latitude])[1]; })
-    .attr("r", 3)
-    .attr("class", "point")
-    .on("mouseover", function(d) {
-      if (d.city != 'Unknown' &&
-          d.country_name != 'Unknown' &&
-          d.target != 'Unknown' &&
-          d.num_killed != 'Unknown' &&
-          d.num_wounded != 'Unknown') {
-        d3.select(".paragraph")
-          .append("p")
-          .attr("id", "removablediv")
-          .append("text")
-          .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + d.num_killed + 
-                        " and wounded " + d.num_wounded + ". The target of the attack was the " + d.target + ".")
-            }
-          })
-       .on("mouseout", function(d) {
-        d3.select(".paragraph")
-        .select("text").remove();
-    });   
+    points = svg.selectAll('.point')
+      .data(data)
+      .enter()
+        .append("svg:circle")
+        .attr("cx", function(d){ return projection([d.longitude,d.latitude])[0]; })
+        .attr("cy", function(d) { return projection([d.longitude,d.latitude])[1]; })
+        .attr("r", 3)
+        .attr("class", "point")
+        .on("mouseover", function(d) {
+          if (d.city != 'Unknown' &&
+              d.country_name != 'Unknown' &&
+              d.target != 'Unknown' &&
+              d.num_killed != 'Unknown' &&
+              d.num_wounded != 'Unknown') {
+            d3.select(".paragraph")
+              .append("p")
+              .attr("id", "removablediv")
+              .append("text")
+              .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + d.num_killed +
+                            " and wounded " + d.num_wounded + ". The target of the attack was the " + d.target + ".")
+                }
+              })
+           .on("mouseout", function(d) {
+            d3.select(".paragraph")
+            .select("text").remove();
+        });
 
-points.data(data).exit().remove();
-});
+    points.data(data).exit().remove();
+  }
+);
 
 // Credit for base implementation of slider to: https://bl.ocks.org/mbostock/6499018
 var margin = {right: 50, left: 50}
