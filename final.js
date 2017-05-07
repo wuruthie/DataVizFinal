@@ -133,13 +133,19 @@ points = svg.selectAll('.point')
     .attr("r", 3)
     .attr("class", "point")
     .on("mouseover", function(d) {
-            d3.select(".paragraph")
-        .append("p")
-            .attr("id", "removablediv")
-              .append("text")
-              .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + d.num_killed + 
-                  " and wounded " + d.num_wounded + ". The target of the attack was the " + d.target + ".")
-        })
+      if (d.city != 'Unknown' &&
+          d.country_name != 'Unknown' &&
+          d.target != 'Unknown' &&
+          d.num_killed != 'Unknown' &&
+          d.num_wounded != 'Unknown') {
+        d3.select(".paragraph")
+          .append("p")
+          .attr("id", "removablediv")
+          .append("text")
+          .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + d.num_killed + 
+                        " and wounded " + d.num_wounded + ". The target of the attack was the " + d.target + ".")
+            }
+          })
        .on("mouseout", function(d) {
         d3.select(".paragraph")
         .select("text").remove();
