@@ -151,6 +151,7 @@ var slider = svg.append("g")
     .attr("class", "slider")
     .attr("transform", "translate(" + margin.left + "," + (svg_height - 50) + ")");
 
+// Adding drag functionality to slider
 slider.append("line")
     .attr("class", "track")
     .attr("x1", x.range()[0])
@@ -170,7 +171,7 @@ slider.append("line")
         .on("start drag", function() {
             displayPointsByYear(x.invert(d3.event.x) | 0);
         }));
-
+// Create svg redndering of slider
 slider.insert("g", ".track-overlay")
     .attr("class", "ticks")
     .attr("transform", "translate(0," + 18 + ")")
@@ -188,7 +189,7 @@ var handle = slider.insert("circle", ".track-overlay")
     .attr("r", 9);
 
 
-
+// Function to create distinct colors for each year for the points
 function displayPointsByYear(year) {
     handle.attr("cx", x(year));
 
@@ -199,6 +200,7 @@ function displayPointsByYear(year) {
     visualizeData(data, colors, year);
 };
 
+// Function to add points with hoverable information
 function visualizeData(data, colors, year) {
     d3.selectAll('.point').remove();
     points = svg.selectAll('.point')
