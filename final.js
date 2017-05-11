@@ -132,7 +132,9 @@ d3.queue()
         //    console.log(eventsByYear.top(Infinity));
 
         var data = eventsByYear.top(Infinity);
-        visualizeData(data);
+        var start_color = ["#994499"]
+        var start_year = 1990
+        visualizeData(data, start_color, start_year);
     });
 
 // Credit for base implementation of slider to: https://bl.ocks.org/mbostock/6499018
@@ -217,6 +219,7 @@ function visualizeData(data, colors, year) {
         .attr("class", "point")
         .style("fill", colors[year % colors.length])
         .on("mouseover", function(d) {
+          console.log("In")
             if (d.city != 'Unknown' &&
                 d.country_name != 'Unknown' &&
                 d.target != 'Unknown' &&
@@ -226,8 +229,8 @@ function visualizeData(data, colors, year) {
                     .append("p")
                     .attr("id", "removablediv")
                     .append("text")
-                    .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + d.num_killed +
-                        " and wounded " + d.num_wounded + ". The target of the attack was the " + d.target + ".")
+                    .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + parseInt(d.num_killed) +
+                        " and wounded " + parseInt(d.num_wounded) + ". The target of the attack was the " + d.target + ".")
             }
         })
         .on("mouseout", function(d) {
