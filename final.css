@@ -34,8 +34,8 @@ svg {
 
 .paragraph{
   position: relative;
-  top: 160px;
-  left: 20px;
+  top: 200px;
+  left: 400px;
   width: 200px;
   height: 200px;
   font-weight:normal;
@@ -151,4 +151,29 @@ pointer-events: none;
   stroke: #000;
   stroke-opacity: 0.5;
   stroke-width: 1.25px;
+}
+
+h1{
+  position:relative;
+  top:450px;
+  left:30px;
+  font-family: helvetica;
+}
+
+h4{
+  position:relative;
+  top:200px;
+  left:30px;
+  width:200px;
+  height:200px;
+  font-family: helvetica;
+}
+
+h5{
+  position:relative;
+  top:120px;
+  left:30px;
+  width:200px;
+  height:200px;
+  font-family: helvetica;
 }

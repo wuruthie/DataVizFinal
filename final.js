@@ -132,7 +132,9 @@ d3.queue()
         //    console.log(eventsByYear.top(Infinity));
 
         var data = eventsByYear.top(Infinity);
-        visualizeData(data);
+        var start_color = ["#994499"]
+        var start_year = 1990
+        visualizeData(data, start_color, start_year);
     });
 
 // Credit for base implementation of slider to: https://bl.ocks.org/mbostock/6499018
@@ -151,6 +153,7 @@ var slider = svg.append("g")
     .attr("class", "slider")
     .attr("transform", "translate(" + margin.left + "," + (svg_height - 50) + ")");
 
+// Adding drag functionality to slider
 slider.append("line")
     .attr("class", "track")
     .attr("x1", x.range()[0])
@@ -170,7 +173,7 @@ slider.append("line")
         .on("start drag", function() {
             displayPointsByYear(x.invert(d3.event.x) | 0);
         }));
-
+// Create svg redndering of slider
 slider.insert("g", ".track-overlay")
     .attr("class", "ticks")
     .attr("transform", "translate(0," + 18 + ")")
@@ -188,7 +191,7 @@ var handle = slider.insert("circle", ".track-overlay")
     .attr("r", 9);
 
 
-
+// Function to create distinct colors for each year for the points
 function displayPointsByYear(year) {
     handle.attr("cx", x(year));
 
@@ -199,6 +202,7 @@ function displayPointsByYear(year) {
     visualizeData(data, colors, year);
 };
 
+// Function to add points with hoverable information
 function visualizeData(data, colors, year) {
     d3.selectAll('.point').remove();
     points = svg.selectAll('.point')
@@ -215,6 +219,7 @@ function visualizeData(data, colors, year) {
         .attr("class", "point")
         .style("fill", colors[year % colors.length])
         .on("mouseover", function(d) {
+          console.log("In")
             if (d.city != 'Unknown' &&
                 d.country_name != 'Unknown' &&
                 d.target != 'Unknown' &&
@@ -224,8 +229,8 @@ function visualizeData(data, colors, year) {
                     .append("p")
                     .attr("id", "removablediv")
                     .append("text")
-                    .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + d.num_killed +
-                        " and wounded " + d.num_wounded + ". The target of the attack was the " + d.target + ".")
+                    .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + parseInt(d.num_killed) +
+                        " and wounded " + parseInt(d.num_wounded) + ". The target of the attack was the " + d.target + ".")
             }
         })
         .on("mouseout", function(d) {
