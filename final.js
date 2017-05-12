@@ -226,8 +226,8 @@ function visualizeData(data, colors, year) {
                     .append("p")
                     .attr("id", "removablediv")
                     .append("text")
-                    .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + d.num_killed +
-                        " and wounded " + d.num_wounded + ". The target of the attack was the " + d.target + ".")
+                    .text("In " + monthNames[d.month] + " " + d.year + ", " + " this terrorist attack in " + d.city + ", " + d.country_name + " killed " + parseInt(d.num_killed) +
+                        " and wounded " + parseInt(d.num_wounded) + ". The target of the attack was the " + d.target + ".")
             }
         })
         .on("mouseout", function(d) {

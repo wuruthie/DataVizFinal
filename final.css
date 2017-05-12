@@ -33,16 +33,16 @@ svg {
 }
 
 .paragraph{
-  position: relative;
-  top: 160px;
-  left: 20px;
-  width: 200px;
+  position: absolute;
+  top: 60%;
+  left: 45%;
+  width: 400px;
   height: 200px;
   font-weight:normal;
   color:#000000;
   letter-spacing:0pt;
   word-spacing:0pt;
-  font-size:22px;
+  font-size:20px;
   text-align:left;
   font-family:helvetica, 
   sans-serif;
@@ -152,3 +152,33 @@ pointer-events: none;
   stroke-opacity: 0.5;
   stroke-width: 1.25px;
 }
+
+/*Title and header*/
+h2{
+  position:absolute;
+  top:35%;
+  left:5%;
+  font-family:sans-serif;
+}
+
+h4{
+  position:absolute;
+  top: 41%;
+  left:5%;
+  font-family:sans-serif;
+}
+
+.definition{
+  position:absolute;
+  top: 44%;
+  left:5%;
+  width:250px;
+}
+
+h5{
+  position:absolute;
+  top: 60%;
+  left:5%;
+  font-family:sans-serif;
+}
+
