@@ -110,7 +110,6 @@ d3.queue()
                 num_wounded: parseInt(data.nwound),
                 city: data.city,
                 target: data.target1
-
             });
         }
 
@@ -132,7 +131,7 @@ d3.queue()
 
         var data = eventsByYear.top(Infinity);
 
-        var color_arr = ['#33691E']
+        var color_arr = ['#3366cc']
         visualizeData(data, color_arr, 1990); // Use a default color and start from the first year in the dataset
     });
 
@@ -187,8 +186,6 @@ slider.insert("g", ".track-overlay")
 var handle = slider.insert("circle", ".track-overlay")
     .attr("class", "handle")
     .attr("r", 9);
-
-
 
 function displayPointsByYear(year) {
 
